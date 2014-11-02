@@ -22,6 +22,11 @@ version. You'll need `git`, `ghc`, and `cabal-install`. You can see
 
 # Usage
 
-No usage yet, it doesn't do anything.
+    SHORT  LONG     DESCRIPTION                  
+           license  Print out the LICENSE (BSD3).
+           readme   Print out the README.        
+    h      help     Print this page              
+           usage    Print this page              
+
         
 [1]: //github.com/bitemyapp/learnhaskell
