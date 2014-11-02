@@ -6,7 +6,7 @@ don't try to use it for anything important.
 # Installation
 
 I haven't published a version yet, but you can install the development
-version. You'll need [`git`][0], `ghc`, and `cabal-install`. You can see
+version. You'll need `git`, `ghc`, and `cabal-install`. You can see
 [bitemyapp/learnhaskell][1] for information on installing those.
 
 1.  First, clone the repository
@@ -24,5 +24,4 @@ version. You'll need [`git`][0], `ghc`, and `cabal-install`. You can see
 
 No usage yet, it doesn't do anything.
         
-[0]: http://git-scm.com/
 [1]: //github.com/bitemyapp/learnhaskell
