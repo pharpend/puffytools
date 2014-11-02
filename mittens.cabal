@@ -16,8 +16,11 @@ maintainer:          pharpend2@gmail.com
 copyright:           2014, Peter Harpending
 category:            Utility
 build-type:          Simple
--- extra-source-files:  
+extra-source-files:  README.md
 cabal-version:       >=1.10
+data-files:
+  README.md
+  LICENSE
 
 library
   build-depends:
