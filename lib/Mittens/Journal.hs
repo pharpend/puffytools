@@ -13,11 +13,10 @@ module Mittens.Journal where
 
 import           Control.Applicative
 import           Data.Aeson
+import           Data.Fixtime
 import           Data.Text (Text)
 import qualified Data.Text as T
-import           Data.Time
 import qualified Data.Vector as V
-import           Mittens.Time ()
 
 -- |A Journal is really a wrapper around a list of entries
 data Journal = Journal { journalTitle :: Text
