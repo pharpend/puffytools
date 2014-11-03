@@ -15,15 +15,15 @@ import           Control.Applicative
 import           Data.Aeson
 import           Data.Fixtime
 import           Data.Text (Text)
-import qualified Data.Text as T
-import qualified Data.Vector as V
+import           Data.Vector (Vector)
+import           Paths_mittens
 
 -- |A Journal is really a wrapper around a list of entries
 data Journal = Journal { journalTitle :: Text
                        , journalLastEdited :: ZonedTime
                        , journalCreated :: ZonedTime
                        , journalDescription :: Maybe Text
-                       , journalEntries :: V.Vector Entry
+                       , journalEntries :: Vector Entry
                        }
   deriving (Show, Eq)
 
@@ -49,3 +49,4 @@ instance FromJSON Entry where
                                <*> v .: "created"
                                <*> v .: "last-edited"
                                <*> v .: "description"
+  parseJSON _ = fail "Not an object"
