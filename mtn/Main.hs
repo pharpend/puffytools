@@ -15,5 +15,4 @@ import Mittens.MtnUtil (parseArguments)
 import System.Environment (getArgs)
 
 main :: IO ()
-main =
-  parseArguments =<< getArgs
+main = parseArguments =<< getArgs
