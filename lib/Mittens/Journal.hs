@@ -16,7 +16,6 @@ import           Data.Aeson
 import           Data.Fixtime
 import           Data.Text (Text)
 import           Data.Vector (Vector)
-import           Paths_mittens
 
 -- |A Journal is really a wrapper around a list of entries
 data Journal = Journal { journalTitle :: Text
