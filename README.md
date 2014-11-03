@@ -22,11 +22,14 @@ version. You'll need `git`, `ghc`, and `cabal-install`. You can see
 
 # Usage
 
-    SHORT  LONG     DESCRIPTION                  
-           license  Print out the LICENSE (BSD3).
-           readme   Print out the README.        
-    h      help     Print this page              
-           usage    Print this page              
+Mittens is used via a client, called `mtn`. Note that these subcommands should
+not be preceded with a hyphen. That is, run `mtn help` rather than `mtn --help`.
+
+    OPTION              THING IT DOES
+    ----------------------------------------------
+    h, help, usage      Print this page
+    license             Print the license (BSD-3).
+    version             Print the version
 
         
 [1]: //github.com/bitemyapp/learnhaskell
