@@ -43,7 +43,6 @@ library
     Paths_mittens
     Mittens.Journal
     Mittens.MtnUtil
-    Mittens.Time
 
 executable mtn
   main-is:             Main.hs
