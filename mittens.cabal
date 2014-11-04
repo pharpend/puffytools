@@ -44,6 +44,7 @@ library
     Paths_mittens
     Mittens.Journal
     Mittens.MtnUtil
+    Mittens.MtnUtil.Journal
     Mittens.Slug
 
 executable mtn

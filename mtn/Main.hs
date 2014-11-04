@@ -11,8 +11,9 @@ Portability  : Linux
 
 module Main where
 
-import Mittens.MtnUtil (parseArguments)
-import System.Environment (getArgs)
+import           Control.Applicative
+import           Mittens.MtnUtil
+import           System.Environment (getArgs)
 
 main :: IO ()
-main = parseArguments =<< getArgs
+main = (runCommand . parseCommand) =<< getArgs
