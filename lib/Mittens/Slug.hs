@@ -66,7 +66,7 @@ instance FromJSON Slug where
   parseJSON (String s) = case mkSlugEither (unpack s) of
     Left err  -> fail err
     Right slg -> return slg
-parseJSON _ = fail "Slug must be of type String."
+  parseJSON _ = fail "Slug must be of type String."
 
 instance ToJSON Slug where
   toJSON (MkSlug s) = toJSON s
