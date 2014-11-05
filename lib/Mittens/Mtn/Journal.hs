@@ -1,6 +1,6 @@
 {- |
-Module       : Mittens.MtnUtil.Journal
-Description  : Parsing for the Journal module in Mittens
+Module       : Mittens.Mtn.Journal
+Description  : Argument parsing for the Journal module in Mittens
 Copyright    : 2014, Peter Harpending
 License      : BSD3
 Maintainer   : Peter Harpending <pharpend2@gmail.com>
@@ -9,7 +9,7 @@ Portability  : Linux
 
 -}
 
-module Mittens.MtnUtil.Journal where
+module Mittens.Mtn.Journal where
 
 data JournalCommand = JournalHelp
                     | JournalHelpErr String

@@ -43,8 +43,8 @@ library
   exposed-modules:
     Paths_mittens
     Mittens.Journal
-    Mittens.MtnUtil
-    Mittens.MtnUtil.Journal
+    Mittens.Mtn
+    Mittens.Mtn.Journal
     Mittens.Slug
 
 executable mtn

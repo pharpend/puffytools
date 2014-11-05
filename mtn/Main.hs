@@ -12,7 +12,7 @@ Portability  : Linux
 module Main where
 
 import           Control.Applicative
-import           Mittens.MtnUtil
+import           Mittens.Mtn
 import           System.Environment (getArgs)
 
 main :: IO ()

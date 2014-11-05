@@ -1,5 +1,5 @@
 {- |
-Module       : Mittens.MtnUtil
+Module       : Mittens.Mtn
 Description  : Utilities for the mtn executable
 Copyright    : 2014, Peter Harpending
 License      : BSD3
@@ -9,13 +9,13 @@ Portability  : Linux
 
 -}
 
-module Mittens.MtnUtil where
+module Mittens.Mtn where
 
 import           Control.Applicative
 import qualified Data.ByteString as B
 import           Data.Version (showVersion)
 import           Paths_mittens
-import qualified Mittens.MtnUtil.Journal as J
+import qualified Mittens.Mtn.Journal as J
 import           Safe
 import           System.IO
 
