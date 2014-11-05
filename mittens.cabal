@@ -7,8 +7,8 @@ synopsis:            A CLI assistant
 description:
   A CLI-based "personal assistant." It will keep journal entries, remind you of
   things, remind others of things, keep dates for you, etc.
-homepage:            https://gitlab.com/pharpend/mittens
-bug-reports:         https://gitlab.com/pharpend/mittens/issues
+homepage:            https://github.com/pharpend/mittens
+bug-reports:         https://github.com/pharpend/mittens/issues
 license:             BSD3
 license-file:        LICENSE
 author:              Peter Harpending
@@ -60,7 +60,7 @@ executable mtn
 
 source-repository head
   type: git
-  location: git://gitlab.com/pharpend/mittens.git
+  location: git://github.com/pharpend/mittens.git
 
 test-suite tests
   hs-source-dirs: test
