@@ -16,6 +16,7 @@ import           Data.Aeson
 import           Data.Monoid
 import qualified Data.ByteString.Lazy as B
 import           Data.Text (Text)
+import qualified Data.Text as T
 import           Data.Time
 import           Data.Vector (Vector)
 import           Paths_mittens
@@ -83,7 +84,7 @@ mkJournal = Journal <$> mkRandomSlug
 
 -- |Figures out the file path for a journal
 generateJournalPath :: Journal -> IO FilePath
-generateJournalPath j = getDataDir >>= \d -> return $ d <> "/" <> unSlug (journalSlug j) <> ".json"
+generateJournalPath j = getDataDir >>= \d -> return $ d <> "/" <> (T.unpack . unSlug . journalSlug) j <> ".json"
 
 -- |Writes a journal to the default file path (~/.mittens/journal-title.json)
 writeJournalDef ::  Journal -> IO ()
