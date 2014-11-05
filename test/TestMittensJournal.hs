@@ -36,9 +36,12 @@ prop_encDecEnc j = Just (encode j) == (encode <$> (de j))
 prop_decEncDecEnc :: Journal -> Bool
 prop_decEncDecEnc j = (de <=< de) j == de j
 
--- |For the hell of it, we'll do it a bunch of times
-prop_dEn :: Journal -> Bool
-prop_dEn j = (de <=< de <=< de <=< de <=< de <=< de <=< de <=< de <=< de <=< de <=< de <=< de <=< de <=< de) j == de j
+-- |For the hell of it, we'll decode/encode a bunch of times
+prop_dEn
+  :: Journal                    -- ^Journal 
+  -> Natural                    -- ^Number of times to execute decode/encode
+  -> Bool
+prop_dEn j n = de j == foldl (\journal _ -> de =<< journal) (de j) [(Natural 1) .. n]
 
 -- |This is a helper function
 de :: Journal -> Maybe Journal
@@ -83,3 +86,20 @@ instance Arbitrary Journal where
                       <*> arbitrary
                       <*> arbitrary
                       <*> arbitrary
+
+-- This type is NOT isomorphic!
+newtype Natural = Natural { unNatural :: Int }
+  deriving (Eq, Show)
+
+instance Enum Natural where
+  toEnum = mkNatural
+  fromEnum = unNatural
+
+mkNatural :: Int -> Natural
+mkNatural i
+  | i < 0 = Natural $ (-1) * i
+  | i == 0 = Natural 1
+  | otherwise = Natural i
+
+instance Arbitrary Natural where
+  arbitrary = mkNatural <$> arbitrary
