@@ -19,7 +19,10 @@ main :: IO ()
 main = defaultMain tests
 
 tests :: [Test]
-tests = [testGroup "QuickCheck Mittens.Journal" [testGroup "Aeson properties" [ testProperty "(encode . decode . encode) = (encode)" prop_encDecEnc
-                                                                              , testProperty "(decode . encode . decode . encode) = (decode . encode)" prop_decEncDecEnc
-                                                                              , testProperty "(decode . encode . decode . encode)^n = (decode . encode)" prop_dEn
-                                                                              ]]]
+tests = [testGroup "QuickCheck Mittens.Journal"
+           [testGroup "Aeson properties"
+              [ testProperty "(encode . decode . encode) = (encode)" prop_encDecEnc
+              , testProperty "(decode . encode . decode . encode) = (decode . encode)"
+                  prop_decEncDecEnc
+              , testProperty "(decode . encode . decode . encode)^n = (decode . encode)" prop_dEn
+              ]]]
