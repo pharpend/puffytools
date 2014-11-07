@@ -11,7 +11,9 @@ Portability  : Linux
 
 module Mittens.Mtn.Journal where
 
+import           Data.Aeson
 import qualified Data.ByteString as B
+import qualified Data.ByteString.Lazy as Bl
 import qualified Data.Text as T
 import qualified Data.Text.IO as Tio
 import           Mittens.Journal
@@ -39,7 +41,9 @@ journalNew (name:_) = do
             Left err -> fail err
             Right s  -> return s
   jnl <- mkJournal slug
-  writeJournalDef jnl
+  putStrLn =<< generateJournalPath jnl 
+  Bl.hPut stdout $ encode jnl
+  writeJournal jnl
 journalNew xs = journalHelp $ "mtn journal new -> no such pattern: " ++ show xs
 
 journalAddEntry :: [String] -> IO ()
@@ -50,20 +54,21 @@ journalAddEntry (name:arg:thing:rest)
     journal <- readJournalName (T.pack name)
     entry <- mkEntry (T.pack summary) Nothing
     let nj = journal `addEntry` entry
-    writeJournalDef nj
+    writeJournal nj
   | arg == "-f" = do
     let filepath = thing
     journal <- readJournalName (T.pack name)
     entry <- getEntry =<< Tio.readFile filepath
     let newJournal = journal `addEntry` entry
-    writeJournalDef newJournal
+    writeJournal newJournal
   | otherwise = journalHelp $ "mtn journal add-entry -> no such pattern: " ++ show (arg:thing:rest)
 
 journalAddEntry (name:_) = do
   journal <- readJournalName (T.pack name)
   etry <- getEntry =<< Tio.hGetContents stdin
   let nj = journal `addEntry` etry
-  writeJournalDef nj
+  putStrLn nj
+  writeJournal nj
 
 journalAddEntry xs = journalHelp $ "mtn journal add-entry -> no such pattern: " ++ show xs
 

@@ -109,17 +109,9 @@ generateSlugPath slg = do
   let fullPath = mconcat [ddir, "/", T.unpack $ unSlug slg, ".json"]
   return fullPath
 
--- |Writes a journal to the default file path (~/.mittens/journal-title.json)
-writeJournalDef ::  Journal -> IO ()
-writeJournalDef j = generateJournalPath j >>= \fp -> writeJournalToFile fp j 
-
 -- |Writes a journal to a file path
-writeJournalToFile :: FilePath -> Journal -> IO ()
-writeJournalToFile fp j = openFile fp WriteMode >>= \h -> writeJournalToHandle h j
-
--- |Writes a journal to a handle, close handle
-writeJournalToHandle :: Handle -> Journal -> IO ()
-writeJournalToHandle h j = let encoded = encode j in B.hPut h encoded 
+writeJournal :: Journal -> IO ()
+writeJournal j = do pth <- generateJournalPath j; B.writeFile pth $ encode j
 
 -- |Reads a journal from the default file path (~/.mittens/journal-title.json)
 readJournalName :: Text -> IO Journal
