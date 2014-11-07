@@ -23,12 +23,15 @@ import           System.IO
 
 parseJournalCommand :: [String] -> IO ()
 parseJournalCommand jc = case jc of
-  _          -> journalHelp
-  "new":rest -> journalNew rest
-  "n":rest   -> journalNew rest
+  _                -> journalHelp
+  "new":rest       -> journalNew rest
+  "n":rest         -> journalNew rest
+  "ae":rest        -> journalAddEntry rest
+  "add-entry":rest -> journalAddEntry rest
+  "a":rest         -> journalAddEntry rest
 
-journalHelp :: IO ()
-journalHelp = fail "help not yet implemented"
+journalHelp :: String -> IO ()
+journalHelp = fail
 
 journalNew :: [String] -> IO ()
 journalNew (name:_) = do
@@ -37,7 +40,7 @@ journalNew (name:_) = do
             Right s  -> return s
   jnl <- mkJournal slug
   writeJournalDef jnl
-journalNew _ = journalHelp
+journalNew xs = journalHelp $ "mtn journal new -> no such pattern: " ++ show xs
 
 journalAddEntry :: [String] -> IO ()
 
@@ -61,4 +64,4 @@ journalAddEntry (name:"-f":filepath:_) = do
   let newJournal = journal `addEntry` entry
   writeJournalDef newJournal
 
-journalAddEntry _ = journalHelp
+journalAddEntry xs = journalHelp $ "mtn journal add-entry -> no such pattern: " ++ show xs
