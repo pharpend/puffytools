@@ -11,6 +11,8 @@ Portability  : Linux
 
 module Mittens.Mtn.Journal where
 
+import           Data.Aeson
+import qualified Data.ByteString.Lazy.Char8 as Bl
 import qualified Data.Text as T
 import qualified Data.Text.IO as Tio
 import           Mittens.Journal
@@ -24,6 +26,9 @@ parseJournalCommand jc = case jc of
   ("ae":rest)        -> journalAddEntry rest
   ("add-entry":rest) -> journalAddEntry rest
   ("a":rest)         -> journalAddEntry rest
+  ("p":rest)         -> journalPrint rest
+  ("print":rest)         -> journalPrint rest
+  ("cat":rest)         -> journalPrint rest
   x                  -> journalHelp $ "mtn journal -> no such pattern: " ++ show x
 
 journalHelp :: String -> IO ()
@@ -62,3 +67,9 @@ journalAddEntry (name:_) = do
   writeJournalDef nj
 
 journalAddEntry xs = journalHelp $ "mtn journal add-entry -> no such pattern: " ++ show xs
+
+journalPrint :: [String] -> IO ()
+journalPrint (name:_) = do
+  journal <- readJournalName (T.pack name)
+  Bl.putStrLn $ encode journal
+journalPrint x = journalHelp $ "mtn journal print : no match for pattern : " ++ show x
