@@ -11,22 +11,54 @@ Portability  : Linux
 
 module Mittens.Mtn.Journal where
 
-data JournalCommand = JournalHelp
-                    | JournalHelpErr String
-                    | JournalNew
-  deriving (Eq, Show)
+import           Control.Applicative
+import qualified Data.Text as T
+import qualified Data.Text.IO as Tio
+import           Data.Time
+import qualified Data.Vector as V
+import           Mittens.Journal
+import           Mittens.Slug
+import           Safe
+import           System.IO
 
-parseJournalCommand :: [String] -> JournalCommand
+parseJournalCommand :: [String] -> IO ()
 parseJournalCommand jc = case jc of
-  "new":_ -> JournalNew
-  "help":_ -> JournalHelp
-  "-h":_ -> JournalHelp
-  "--help":_ -> JournalHelp
-  "--usage":_ -> JournalHelp
-  x -> JournalHelpErr $ "Not recognized: " ++ show x
+  _          -> journalHelp
+  "new":rest -> journalNew rest
+  "n":rest   -> journalNew rest
 
-runJournalCommand :: JournalCommand -> IO ()
-runJournalCommand cmd = case cmd of
-  JournalHelp -> fail "Not yet implemented - journal help."
-  JournalHelpErr e -> fail e
-  JournalNew -> fail "Not yet implemented."
+journalHelp :: IO ()
+journalHelp = fail "help not yet implemented"
+
+journalNew :: [String] -> IO ()
+journalNew (name:_) = do
+  slug <- case mkSlugEither (T.pack name) of
+            Left err -> fail err
+            Right s  -> return s
+  jnl <- mkJournal slug
+  writeJournalDef jnl
+journalNew _ = journalHelp
+
+journalAddEntry :: [String] -> IO ()
+
+journalAddEntry (name:"-":_) = journalAddEntry [name]
+
+journalAddEntry (name:_) = do
+  journal <- readJournalName (T.pack name)
+  etry <- getEntry <$> Tio.hGetContents stdin
+  let nj = journal `addEntry` etry
+  writeJournalDef nj
+
+journalAddEntry (name:"-s":summary:_) = do
+  journal <- readJournalName (T.pack name)
+  entry <- mkEntry (T.pack summary) Nothing
+  let nj = journal `addEntry` entry
+  writeJournalDef nj
+
+journalAddEntry (name:"-f":filepath:_) = do
+  journal <- readJournalName (T.pack name)
+  entry <- getEntry <$> Tio.readFile filepath
+  let newJournal = journal `addEntry` entry
+  writeJournalDef newJournal
+
+journalAddEntry _ = journalHelp

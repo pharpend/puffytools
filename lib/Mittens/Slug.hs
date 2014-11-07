@@ -39,8 +39,7 @@ mkSlugMaybe s = case mkSlugEither s of
 -- |Try to make a Slug, return an error if I can't
 mkSlugEither :: Text -> Either String Slug
 mkSlugEither s
-  | T.length s < 4 = Left "The slug must be at least 4 chars long."
-  | T.length s > 32 = Left "The slug must be at most 32 chars long."
+  | T.length s < 1 = Left "The slug must be at least 4 chars long."
   | ftb /= s = Left $ "The slug may only contain these characters: " <> slugAcceptChars
   | otherwise = Right $ MkSlug s
   where
@@ -50,10 +49,9 @@ mkSlugEither s
 
 -- |Generates a random slug 32 chars long
 mkRandomSlug :: IO Slug
-mkRandomSlug = T.pack <$> (replicateM 32 ioc) >>= \s ->
-                                                     case mkSlugEither s of
-                                                       Left err -> fail err
-                                                       Right slg -> return slg
+mkRandomSlug = T.pack <$> (replicateM 32 ioc) >>= \s -> case mkSlugEither s of
+                                                    Left err  -> fail err
+                                                    Right slg -> return slg
   where
     ioc :: IO Char
     ioc = runRVar rvc StdRandom
