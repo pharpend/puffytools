@@ -16,7 +16,6 @@ import qualified Data.ByteString as B
 import           Data.Version (showVersion)
 import           Paths_mittens
 import qualified Mittens.Mtn.Journal as J
-import           Safe
 import           System.IO
 
 data Command = Help

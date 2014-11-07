@@ -123,7 +123,6 @@ readJournalFromHandle h = do
     Left err -> fail err
     Right j  -> return j
   
-
 listJournals :: IO [FilePath]
-listJournals = filter (\fnom -> fnom `endswith` ".json") <$> allDataFiles
+listJournals = filter (endswith ".json") <$> allDataFiles
   where allDataFiles =  getAppUserDataDirectory "mittens" >>= getDirectoryContents

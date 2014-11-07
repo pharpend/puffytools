@@ -11,7 +11,6 @@ Portability  : Linux
 
 module Main where
 
-import           Control.Applicative
 import           Mittens.Mtn
 import           System.Environment (getArgs)
 
