@@ -24,7 +24,6 @@ import           Data.Vector (Vector)
 import qualified Data.Vector as V
 import           Paths_mittens
 import           Mittens.Slug
-import           Safe
 import           System.IO
 
 -- |A Journal is really a wrapper around a list of entries
@@ -41,7 +40,6 @@ data Journal = Journal { journalSlug :: Slug
 data Entry = Entry { entrySummary :: Text
                    , entryCreated :: UTCTime
                    , entryLastEdited :: UTCTime
-                   , entryDescription :: Maybe Text
                    }
   deriving (Show, Eq)
 
@@ -67,34 +65,20 @@ instance FromJSON Entry where
   parseJSON (Object v) = Entry <$> v .: "summary"
                                <*> v .: "created"
                                <*> v .: "last-edited"
-                               <*> v .: "description"
   parseJSON _ = fail "Not an object"
 
 instance ToJSON Entry where
   toJSON e = object [ "summary" .= entrySummary e
                     , "created" .= entryCreated e
                     , "last-edited" .= entryLastEdited e
-                    , "description" .= entryDescription e
                     ]
-
-mkEntry :: Text -> Maybe Text -> IO Entry
-mkEntry sum desc = do
-  t <- getCurrentTime
-  return $ Entry sum t t desc
-
 
 addEntry :: Journal -> Entry -> Journal
 addEntry j e = j { journalEntries = newEntries }
   where newEntries = journalEntries j `V.snoc` e
 
-getEntry :: Text -> IO Entry
-getEntry entryText = do
-  let entryLines = T.lines entryText
-  sumry <- case headMay entryLines of
-             Just sum -> return sum
-             Nothing  -> fail "empty summary, aborting"
-  let desc = T.unlines <$> tailMay entryLines
-  mkEntry sumry desc
+mkEntry :: Text -> IO Entry
+mkEntry entryText = Entry entryText <$> getCurrentTime <*> getCurrentTime
 
 -- |Makes a journal, given a slug
 mkJournal :: Slug -> IO Journal

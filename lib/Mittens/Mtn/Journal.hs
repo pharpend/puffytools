@@ -11,7 +11,6 @@ Portability  : Linux
 
 module Mittens.Mtn.Journal where
 
-import           Data.Aeson
 import           Data.Aeson.Encode.Pretty
 import qualified Data.ByteString as B
 import qualified Data.ByteString.Lazy as Bl
@@ -31,7 +30,7 @@ parseJournalCommand jc = case jc of
   ("p":rest)         -> journalPrint rest
   ("print":rest)         -> journalPrint rest
   ("cat":rest)         -> journalPrint rest
-  x                  -> journalHelp $ "mtn journal -> no such pattern: " ++ show x
+  x                  -> journalHelp $ "mtn journal : no match for pattern: " ++ show x
 
 journalHelp :: String -> IO ()
 journalHelp = fail
@@ -45,33 +44,31 @@ journalNew (name:_) = do
   putStrLn =<< generateJournalPath jnl 
   Bl.hPut stdout $ encodePretty jnl
   writeJournal jnl
-journalNew xs = journalHelp $ "mtn journal new -> no such pattern: " ++ show xs
+journalNew xs = journalHelp $ "mtn journal new : no match for pattern: " ++ show xs
 
 journalAddEntry :: [String] -> IO ()
 
-journalAddEntry (name:arg:thing:rest)
-  | arg == "-s" = do
-    let summary = thing
+journalAddEntry (name:arg:thing) = case (arg : thing) of
+  ("-f":filepath:_) -> do
     journal <- readJournalName (T.pack name)
-    entry <- mkEntry (T.pack summary) Nothing
-    let nj = journal `addEntry` entry
-    writeJournal nj
-  | arg == "-f" = do
-    let filepath = thing
-    journal <- readJournalName (T.pack name)
-    entry <- getEntry =<< Tio.readFile filepath
+    entry <- mkEntry =<< Tio.readFile filepath
     let newJournal = journal `addEntry` entry
     writeJournal newJournal
-  | otherwise = journalHelp $ "mtn journal add-entry -> no such pattern: " ++ show (arg:thing:rest)
+  (summary:_) -> do
+    journal <- readJournalName (T.pack name)
+    entry <- mkEntry (T.pack summary)
+    let nj = journal `addEntry` entry
+    writeJournal nj
+  _ -> journalHelp $ "mtn journal add-entry : no match for pattern: " ++ show (arg : thing)
 
 journalAddEntry (name:_) = do
   journal <- readJournalName (T.pack name)
-  etry <- getEntry =<< Tio.hGetContents stdin
+  etry <- mkEntry =<< Tio.hGetContents stdin
   let nj = journal `addEntry` etry
   putStrLn $ show nj
   writeJournal nj
 
-journalAddEntry xs = journalHelp $ "mtn journal add-entry -> no such pattern: " ++ show xs
+journalAddEntry xs = journalHelp $ "mtn journal add-entry : no match for pattern: " ++ show xs
 
 journalPrint :: [String] -> IO ()
 journalPrint (name:_) = do
