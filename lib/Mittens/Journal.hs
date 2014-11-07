@@ -13,6 +13,7 @@ module Mittens.Journal where
 
 import           Control.Applicative
 import           Data.Aeson
+import           Data.Aeson.Encode.Pretty
 import           Data.Monoid
 import qualified Data.ByteString as Bs
 import qualified Data.ByteString.Lazy as B
@@ -111,7 +112,7 @@ generateSlugPath slg = do
 
 -- |Writes a journal to a file path
 writeJournal :: Journal -> IO ()
-writeJournal j = do pth <- generateJournalPath j; B.writeFile pth $ encode j
+writeJournal j = do pth <- generateJournalPath j; B.writeFile pth $ encodePretty j
 
 -- |Reads a journal from the default file path (~/.mittens/journal-title.json)
 readJournalName :: Text -> IO Journal

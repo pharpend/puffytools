@@ -12,6 +12,7 @@ Portability  : Linux
 module Mittens.Mtn.Journal where
 
 import           Data.Aeson
+import           Data.Aeson.Encode.Pretty
 import qualified Data.ByteString as B
 import qualified Data.ByteString.Lazy as Bl
 import qualified Data.Text as T
@@ -42,7 +43,7 @@ journalNew (name:_) = do
             Right s  -> return s
   jnl <- mkJournal slug
   putStrLn =<< generateJournalPath jnl 
-  Bl.hPut stdout $ encode jnl
+  Bl.hPut stdout $ encodePretty jnl
   writeJournal jnl
 journalNew xs = journalHelp $ "mtn journal new -> no such pattern: " ++ show xs
 
