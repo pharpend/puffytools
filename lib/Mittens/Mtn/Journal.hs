@@ -30,6 +30,9 @@ parseJournalCommand jc = case jc of
   ("p":rest)         -> journalPrint rest
   ("print":rest)         -> journalPrint rest
   ("cat":rest)         -> journalPrint rest
+  ("l":_)         -> journalList
+  ("ls":_)         -> journalList
+  ("list":_)         -> journalList
   x                  -> journalHelp $ "mtn journal : no match for pattern: " ++ show x
 
 journalHelp :: String -> IO ()
@@ -78,3 +81,6 @@ journalPrint (name:_) = do
   B.hPut stdout =<< B.readFile =<< generateSlugPath slug
 
 journalPrint x = journalHelp $ "mtn journal print : no match for pattern : " ++ show x
+
+journalList :: IO ()
+journalList = listJournals >>= mapM_ putStrLn

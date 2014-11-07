@@ -17,6 +17,7 @@ import           Data.Aeson.Encode.Pretty
 import           Data.Monoid
 import qualified Data.ByteString as Bs
 import qualified Data.ByteString.Lazy as B
+import           Data.List.Utils
 import           Data.Text (Text)
 import qualified Data.Text as T
 import           Data.Time
@@ -122,3 +123,7 @@ readJournalFromHandle h = do
     Left err -> fail err
     Right j  -> return j
   
+
+listJournals :: IO [FilePath]
+listJournals = filter (\fnom -> fnom `endswith` ".json") <$> allDataFiles
+  where allDataFiles =  getAppUserDataDirectory "mittens" >>= getDirectoryContents
