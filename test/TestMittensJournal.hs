@@ -74,7 +74,7 @@ instance Arbitrary UTCTime where
   arbitrary = pure $ unsafePerformIO getCurrentTime 
 
 instance Arbitrary Entry where
-  arbitrary = Entry <$> arbitrary <*> arbitrary <*> arbitrary <*> arbitrary
+  arbitrary = Entry <$> arbitrary <*> arbitrary <*> arbitrary 
 
 instance Arbitrary x => Arbitrary (V.Vector x) where
   arbitrary = V.fromList <$> arbitrary
