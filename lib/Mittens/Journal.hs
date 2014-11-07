@@ -22,8 +22,8 @@ import qualified Data.Text as T
 import           Data.Time
 import           Data.Vector (Vector)
 import qualified Data.Vector as V
-import           Paths_mittens
 import           Mittens.Slug
+import           System.Directory
 import           System.IO
 
 -- |A Journal is really a wrapper around a list of entries
@@ -86,11 +86,11 @@ mkJournal s = getCurrentTime >>= \t -> return $ Journal s mempty t t mempty memp
 
 -- |Figures out the file path for a journal
 generateJournalPath :: Journal -> IO FilePath
-generateJournalPath j = getDataDir >>= \d -> return $ d <> "/" <> (T.unpack . unSlug . journalSlug) j <> ".json"
+generateJournalPath j = getAppUserDataDirectory "mittens" >>= \d -> return $ d <> "/" <> (T.unpack . unSlug . journalSlug) j <> ".json"
 
 generateSlugPath :: Slug -> IO FilePath
 generateSlugPath slg = do
-  ddir <- getDataDir
+  ddir <- getAppUserDataDirectory "mittens"
   let fullPath = mconcat [ddir, "/", T.unpack $ unSlug slg, ".json"]
   return fullPath
 
