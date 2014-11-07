@@ -11,8 +11,7 @@ Portability  : Linux
 
 module Mittens.Mtn.Journal where
 
-import           Data.Aeson
-import qualified Data.ByteString.Lazy.Char8 as Bl
+import qualified Data.ByteString as B
 import qualified Data.Text as T
 import qualified Data.Text.IO as Tio
 import           Mittens.Journal
@@ -70,6 +69,9 @@ journalAddEntry xs = journalHelp $ "mtn journal add-entry -> no such pattern: " 
 
 journalPrint :: [String] -> IO ()
 journalPrint (name:_) = do
-  journal <- readJournalName (T.pack name)
-  Bl.putStrLn $ encode journal
+  slug <- case mkSlugEither (T.pack name) of
+    Left err -> fail err
+    Right s -> return s
+  B.hPut stdout =<< B.readFile =<< generateSlugPath slug
+
 journalPrint x = journalHelp $ "mtn journal print : no match for pattern : " ++ show x
