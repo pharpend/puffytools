@@ -45,7 +45,7 @@ journalAddEntry (name:"-":_) = journalAddEntry [name]
 
 journalAddEntry (name:_) = do
   journal <- readJournalName (T.pack name)
-  etry <- getEntry <$> Tio.hGetContents stdin
+  etry <- getEntry =<< Tio.hGetContents stdin
   let nj = journal `addEntry` etry
   writeJournalDef nj
 
@@ -57,7 +57,7 @@ journalAddEntry (name:"-s":summary:_) = do
 
 journalAddEntry (name:"-f":filepath:_) = do
   journal <- readJournalName (T.pack name)
-  entry <- getEntry <$> Tio.readFile filepath
+  entry <- getEntry =<< Tio.readFile filepath
   let newJournal = journal `addEntry` entry
   writeJournalDef newJournal
 

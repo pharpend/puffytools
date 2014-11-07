@@ -43,7 +43,7 @@ runCommand :: Command -> IO ()
 runCommand cmd = case cmd of
   Help -> help
   HelpErr e -> helpErr e
-  Journal x -> J.runJournalCommand $ J.parseJournalCommand x
+  Journal x -> J.parseJournalCommand x
   PrintLicense -> printLicense
   PrintVersion -> printVersion
 
