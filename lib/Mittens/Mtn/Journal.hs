@@ -23,7 +23,7 @@ import           System.IO
 
 parseJournalCommand :: [String] -> IO ()
 parseJournalCommand jc = case jc of
-  _                -> journalHelp
+  x                -> journalHelp $ "mtn journal -> no such pattern: " ++ show x
   "new":rest       -> journalNew rest
   "n":rest         -> journalNew rest
   "ae":rest        -> journalAddEntry rest
