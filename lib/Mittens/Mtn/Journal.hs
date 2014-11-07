@@ -67,7 +67,7 @@ journalAddEntry (name:_) = do
   journal <- readJournalName (T.pack name)
   etry <- getEntry =<< Tio.hGetContents stdin
   let nj = journal `addEntry` etry
-  putStrLn nj
+  putStrLn $ show nj
   writeJournal nj
 
 journalAddEntry xs = journalHelp $ "mtn journal add-entry -> no such pattern: " ++ show xs
