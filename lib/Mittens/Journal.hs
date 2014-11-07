@@ -119,7 +119,7 @@ writeJournalToFile fp j = openFile fp WriteMode >>= \h -> writeJournalToHandle h
 
 -- |Writes a journal to a handle, close handle
 writeJournalToHandle :: Handle -> Journal -> IO ()
-writeJournalToHandle h j = let encoded = encode j in B.hPut h encoded *> hClose h
+writeJournalToHandle h j = let encoded = encode j in B.hPut h encoded 
 
 -- |Reads a journal from the default file path (~/.mittens/journal-title.json)
 readJournalName :: Text -> IO Journal
@@ -135,13 +135,12 @@ readJournalDef slg = generateSlugPath slg >>= readJournalFromFile
 
 -- |Reads a journal, given a file path
 readJournalFromFile :: FilePath -> IO Journal
-readJournalFromFile fp = openFile fp WriteMode >>= readJournalFromHandle
+readJournalFromFile fp = openFile fp ReadMode >>= readJournalFromHandle
 
 -- |Reads a journal from a handle, close handle
 readJournalFromHandle :: Handle -> IO Journal
 readJournalFromHandle h = do
   handleBytes <- Bs.hGetContents h
-  hClose h
   case eitherDecodeStrict' handleBytes of
     Left err -> fail err
     Right j  -> return j

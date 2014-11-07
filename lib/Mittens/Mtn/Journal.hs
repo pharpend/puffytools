@@ -11,24 +11,20 @@ Portability  : Linux
 
 module Mittens.Mtn.Journal where
 
-import           Control.Applicative
 import qualified Data.Text as T
 import qualified Data.Text.IO as Tio
-import           Data.Time
-import qualified Data.Vector as V
 import           Mittens.Journal
 import           Mittens.Slug
-import           Safe
 import           System.IO
 
 parseJournalCommand :: [String] -> IO ()
 parseJournalCommand jc = case jc of
-  x                -> journalHelp $ "mtn journal -> no such pattern: " ++ show x
-  "new":rest       -> journalNew rest
-  "n":rest         -> journalNew rest
-  "ae":rest        -> journalAddEntry rest
-  "add-entry":rest -> journalAddEntry rest
-  "a":rest         -> journalAddEntry rest
+  ("new":rest)       -> journalNew rest
+  ("n":rest)         -> journalNew rest
+  ("ae":rest)        -> journalAddEntry rest
+  ("add-entry":rest) -> journalAddEntry rest
+  ("a":rest)         -> journalAddEntry rest
+  x                  -> journalHelp $ "mtn journal -> no such pattern: " ++ show x
 
 journalHelp :: String -> IO ()
 journalHelp = fail
@@ -44,24 +40,25 @@ journalNew xs = journalHelp $ "mtn journal new -> no such pattern: " ++ show xs
 
 journalAddEntry :: [String] -> IO ()
 
-journalAddEntry (name:"-":_) = journalAddEntry [name]
+journalAddEntry (name:arg:thing:rest)
+  | arg == "-s" = do
+    let summary = thing
+    journal <- readJournalName (T.pack name)
+    entry <- mkEntry (T.pack summary) Nothing
+    let nj = journal `addEntry` entry
+    writeJournalDef nj
+  | arg == "-f" = do
+    let filepath = thing
+    journal <- readJournalName (T.pack name)
+    entry <- getEntry =<< Tio.readFile filepath
+    let newJournal = journal `addEntry` entry
+    writeJournalDef newJournal
+  | otherwise = journalHelp $ "mtn journal add-entry -> no such pattern: " ++ show (arg:thing:rest)
 
 journalAddEntry (name:_) = do
   journal <- readJournalName (T.pack name)
   etry <- getEntry =<< Tio.hGetContents stdin
   let nj = journal `addEntry` etry
   writeJournalDef nj
-
-journalAddEntry (name:"-s":summary:_) = do
-  journal <- readJournalName (T.pack name)
-  entry <- mkEntry (T.pack summary) Nothing
-  let nj = journal `addEntry` entry
-  writeJournalDef nj
-
-journalAddEntry (name:"-f":filepath:_) = do
-  journal <- readJournalName (T.pack name)
-  entry <- getEntry =<< Tio.readFile filepath
-  let newJournal = journal `addEntry` entry
-  writeJournalDef newJournal
 
 journalAddEntry xs = journalHelp $ "mtn journal add-entry -> no such pattern: " ++ show xs
