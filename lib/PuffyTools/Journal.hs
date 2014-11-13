@@ -1,5 +1,5 @@
 {- |
-Module       : Mittens.Journal
+Module       : PuffyTools.Journal
 Description  : A Journal-keeping thing
 Copyright    : 2014, Peter Harpending
 License      : BSD3
@@ -9,7 +9,7 @@ Portability  : Linux
 
 -}
 
-module Mittens.Journal where
+module PuffyTools.Journal where
 
 import           Control.Applicative
 import           Data.Aeson
@@ -23,7 +23,7 @@ import qualified Data.Text as T
 import           Data.Time
 import           Data.Vector (Vector)
 import qualified Data.Vector as V
-import           Mittens.Slug
+import           PuffyTools.Slug
 import           System.Directory
 import           System.IO
 

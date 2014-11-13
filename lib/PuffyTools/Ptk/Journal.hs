@@ -1,6 +1,6 @@
 {- |
-Module       : Mittens.Mtn.Journal
-Description  : Argument parsing for the Journal module in Mittens
+Module       : PuffyTools.Ptk.Journal
+Description  : Argument parsing for the Journal module in PuffyTools
 Copyright    : 2014, Peter Harpending
 License      : BSD3
 Maintainer   : Peter Harpending <pharpend2@gmail.com>
@@ -9,15 +9,15 @@ Portability  : Linux
 
 -}
 
-module Mittens.Mtn.Journal where
+module PuffyTools.Ptk.Journal where
 
 import           Data.Aeson.Encode.Pretty
 import qualified Data.ByteString as B
 import qualified Data.ByteString.Lazy as Bl
 import qualified Data.Text as T
 import qualified Data.Text.IO as Tio
-import           Mittens.Journal
-import           Mittens.Slug
+import           PuffyTools.Journal
+import           PuffyTools.Slug
 import           System.IO
 
 parseJournalCommand :: [String] -> IO ()

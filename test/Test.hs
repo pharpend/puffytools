@@ -1,6 +1,6 @@
 {- |
 Module       : Main
-Description  : Test the Mittens journal functions
+Description  : Test the PuffyTools journal functions
 Copyright    : 2014, Peter Harpending
 License      : BSD3
 Maintainer   : Peter Harpending <pharpend2@gmail.com>
@@ -11,7 +11,7 @@ Portability  : Linux
 
 module Main where
 
-import           TestMittensJournal
+import           TestPuffyToolsJournal
 import           Test.Framework
 import           Test.Framework.Providers.QuickCheck2
 
@@ -19,7 +19,7 @@ main :: IO ()
 main = defaultMain tests
 
 tests :: [Test]
-tests = [testGroup "QuickCheck Mittens.Journal"
+tests = [testGroup "QuickCheck PuffyTools.Journal"
            [testGroup "Aeson properties"
               [ testProperty "(encode . decode . encode) = (encode)" prop_encDecEnc
               , testProperty "(decode . encode . decode . encode) = (decode . encode)"

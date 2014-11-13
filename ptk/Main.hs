@@ -1,6 +1,6 @@
 {- |
 Module       : Main
-Description  : Runs Mittens
+Description  : Runs the puffy tool kit (ptk)
 Copyright    : 2014, Peter Harpending
 License      : BSD3
 Maintainer   : Peter Harpending <pharpend2@gmail.com>
@@ -11,7 +11,7 @@ Portability  : Linux
 
 module Main where
 
-import           Mittens.Mtn
+import           PuffyTools.Ptk
 import           System.Environment (getArgs)
 
 main :: IO ()

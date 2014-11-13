@@ -1,5 +1,5 @@
 {- |
-Module       : Mittens.Slug
+Module       : PuffyTools.Slug
 Description  : Generate slugs
 Copyright    : 2014, Peter Harpending
 License      : BSD3
@@ -13,7 +13,7 @@ The slug must be alphanumeric, with the exception of "-_". It also
 must be between 4 and 32 chars long.
 -}
 
-module Mittens.Slug
+module PuffyTools.Slug
        (Slug, mkSlugMaybe, mkSlugEither, mkRandomSlug, slugAcceptChars,
         unSlug)
        where

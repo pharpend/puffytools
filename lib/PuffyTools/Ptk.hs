@@ -1,5 +1,5 @@
 {- |
-Module       : Mittens.Mtn
+Module       : PuffyTools.Ptk
 Description  : Utilities for the mtn executable
 Copyright    : 2014, Peter Harpending
 License      : BSD3
@@ -9,13 +9,13 @@ Portability  : Linux
 
 -}
 
-module Mittens.Mtn where
+module PuffyTools.Ptk where
 
 import           Control.Applicative
 import qualified Data.ByteString as B
 import           Data.Version (showVersion)
-import           Paths_mittens
-import qualified Mittens.Mtn.Journal as J
+import           Paths_puffytools
+import qualified PuffyTools.Ptk.Journal as J
 import           System.IO
 
 data Command = Help
