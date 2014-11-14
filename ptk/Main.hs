@@ -11,8 +11,9 @@ Portability  : Linux
 
 module Main where
 
-import           PuffyTools.Ptk
-import           System.Environment (getArgs)
+-- import           Control.Applicative
+-- import           System.Environment (getArgs)
 
 main :: IO ()
-main = (runCommand . parseCommand) =<< getArgs
+main = return ()
+
