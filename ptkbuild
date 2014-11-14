@@ -1,0 +1,13 @@
+#!/bin/sh
+# Cabal is annoying, so i wrote my own build script
+
+case $1 in
+  build)
+    cabal install -j --enable-tests
+    ;;
+  test)
+    cabal install -j --enable-tests &&
+    cabal test &&
+    cat dist/test/puffytools-0.0.0-tests.log  
+    ;;
+esac
