@@ -11,6 +11,11 @@ Portability  : Linux
 
 module Main where
 
+import           Data.Char
+import           Data.List
+import           PuffyTools.Ptk.ArgumentResult
+import           PuffyTools.Journal
+import           TestPtkArgumentResult
 import           TestPuffyToolsJournal
 import           Test.Framework
 import           Test.Framework.Providers.QuickCheck2
@@ -19,10 +24,10 @@ main :: IO ()
 main = defaultMain tests
 
 tests :: [Test]
-tests = [testGroup "QuickCheck PuffyTools.Journal"
+tests = [testGroup "PuffyTools.Journal"
            [testGroup "Aeson properties"
               [ testProperty "(encode . decode . encode) = (encode)" prop_encDecEnc
               , testProperty "(decode . encode . decode . encode) = (decode . encode)"
                   prop_decEncDecEnc
               , testProperty "(decode . encode . decode . encode)^n = (decode . encode)" prop_dEn
-              ]]]
+              ]], testGroup "Ptk" arTestGroup]

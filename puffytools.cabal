@@ -47,6 +47,7 @@ library
     Paths_puffytools
     PuffyTools.Journal
     PuffyTools.Ptk
+    PuffyTools.Ptk.ArgumentResult
     PuffyTools.Ptk.Journal
     PuffyTools.Slug
 
@@ -73,6 +74,7 @@ test-suite tests
   main-is: Test.hs
   other-modules:
     TestPuffyToolsJournal
+    TestPtkArgumentResult
     TestPuffyToolsSlug
   build-depends:
       aeson                       >=0.7   && <0.9
