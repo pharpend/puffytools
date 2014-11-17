@@ -11,9 +11,6 @@ Portability  : Linux
 
 module Main where
 
--- import           Control.Applicative
--- import           System.Environment (getArgs)
-
 main :: IO ()
 main = return ()
 

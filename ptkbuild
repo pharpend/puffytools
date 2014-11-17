@@ -1,13 +1,41 @@
 #!/bin/sh
 # Cabal is annoying, so i wrote my own build script
 
-case $1 in
-  build)
+
+build () {
     cabal install -j --enable-tests
-    ;;
-  test)
-    cabal install -j --enable-tests &&
+}
+
+test () {
     cabal test &&
     cat dist/test/puffytools-0.0.0-tests.log  
-    ;;
+}
+
+clean () {
+    cabal clean
+}
+
+case $1 in
+    build)
+        build
+        ;;
+    test)
+        build && test
+        ;;
+    clean)
+        clean &&
+        case $2 in
+            build)
+                build
+                ;;
+            test)
+                build && test
+                ;;
+            *)
+        esac
+        ;;
+    *)
+        echo "Not a valid argument: ${1}"
+        echo "Valid arguments are {build, test, clean [build,test]}"
+        ;;
 esac

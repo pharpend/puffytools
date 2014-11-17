@@ -13,9 +13,7 @@ module Main where
 
 import           Data.Char
 import           Data.List
-import           PuffyTools.Ptk.ArgumentResult
 import           PuffyTools.Journal
-import           TestPtkArgumentResult
 import           TestPuffyToolsJournal
 import           Test.Framework
 import           Test.Framework.Providers.QuickCheck2
@@ -30,4 +28,4 @@ tests = [testGroup "PuffyTools.Journal"
               , testProperty "(decode . encode . decode . encode) = (decode . encode)"
                   prop_decEncDecEnc
               , testProperty "(decode . encode . decode . encode)^n = (decode . encode)" prop_dEn
-              ]], testGroup "Ptk" arTestGroup]
+              ]]]
