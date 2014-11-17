@@ -35,7 +35,6 @@ case $1 in
         esac
         ;;
     *)
-        echo "Not a valid argument: ${1}"
-        echo "Valid arguments are {build, test, clean [build,test]}"
+        clean && build && test
         ;;
 esac
