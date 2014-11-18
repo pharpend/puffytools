@@ -36,7 +36,7 @@ help :: Action IO
 help = io $ showUsage commandTree
 
 commandTree :: Commands IO
-commandTree = Node (Command "ptk" description) [journalTree, helpTree, versionTree]
+commandTree = Node (Command "ptk" description help) [journalTree, helpTree, versionTree]
   where
     description = "The Puffy Toolkit, version " ++ showVersion version
 
