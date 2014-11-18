@@ -13,6 +13,7 @@ module Main where
 
 import           Data.Version
 import           Paths_puffytools
+import           Ptk.Journal
 import           System.Console.Argument
 import           System.Console.Command
 import           System.Console.Program
@@ -27,23 +28,17 @@ versionTree = Node commandVersion []
     printVersion = io . putStr $ showVersion version
 
 helpTree :: Commands IO
-helpTree =
-  let helpCommand = Command "help" "Show this help menu." help
-  in Node helpCommand []
+helpTree = Node helpCommand []
+  where
+    helpCommand = Command "help" "Show this help menu." help
 
 help :: Action IO
 help = io $ showUsage commandTree
 
 commandTree :: Commands IO
-commandTree = Node (Command "ptk" description help) [journalTree, helpTree, versionTree]
+commandTree = Node (Command "ptk" description) [journalTree, helpTree, versionTree]
   where
     description = "The Puffy Toolkit, version " ++ showVersion version
-
-journalTree :: Commands IO
-journalTree = Node journalCommand []
-  where
-    journalCommand = Command "journal" "Do things with Journals" journalHelp
-    journalHelp = io $ showUsage journalTree
 
 main :: IO ()
 main = single commandTree

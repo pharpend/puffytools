@@ -128,4 +128,8 @@ readJournalFromHandle h = do
   
 listJournals :: IO [FilePath]
 listJournals = filter (endswith ".json") <$> allDataFiles
-  where allDataFiles =  getAppUserDataDirectory programName >>= getDirectoryContents
+  where
+    allDataFiles = do
+      i <- getAppUserDataDirectory programName
+      i `seq` createDirectoryIfMissing True i
+      getDirectoryContents i
