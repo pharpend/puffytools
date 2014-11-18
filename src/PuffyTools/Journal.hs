@@ -27,6 +27,9 @@ import           PuffyTools.Slug
 import           System.Directory
 import           System.IO
 
+programName :: String
+programName = "puffytools"
+
 -- |A Journal is really a wrapper around a list of entries
 data Journal = Journal { journalSlug :: Slug
                        , journalTitle :: Text
@@ -87,11 +90,11 @@ mkJournal s = getCurrentTime >>= \t -> return $ Journal s mempty t t mempty memp
 
 -- |Figures out the file path for a journal
 generateJournalPath :: Journal -> IO FilePath
-generateJournalPath j = getAppUserDataDirectory "mittens" >>= \d -> return $ d <> "/" <> (T.unpack . unSlug . journalSlug) j <> ".json"
+generateJournalPath j = getAppUserDataDirectory programName >>= \d -> return $ d <> "/" <> (T.unpack . unSlug . journalSlug) j <> ".json"
 
 generateSlugPath :: Slug -> IO FilePath
 generateSlugPath slg = do
-  ddir <- getAppUserDataDirectory "mittens"
+  ddir <- getAppUserDataDirectory programName
   let fullPath = mconcat [ddir, "/", T.unpack $ unSlug slg, ".json"]
   return fullPath
 
@@ -99,7 +102,7 @@ generateSlugPath slg = do
 writeJournal :: Journal -> IO ()
 writeJournal j = do pth <- generateJournalPath j; B.writeFile pth $ encodePretty j
 
--- |Reads a journal from the default file path (~/.mittens/journal-title.json)
+-- |Reads a journal from the default file path (~/.puffytools/journal-title.json)
 readJournalName :: Text -> IO Journal
 readJournalName name = do
   slg <- case mkSlugEither name of
@@ -107,7 +110,7 @@ readJournalName name = do
            Right s  -> return s
   generateSlugPath slg >>= readJournalFromFile
 
--- |Reads a journal from the default file path (~/.mittens/journal-title.json)
+-- |Reads a journal from the default file path (~/.puffytools/journal-title.json)
 readJournalDef :: Slug -> IO Journal
 readJournalDef slg = generateSlugPath slg >>= readJournalFromFile
 
@@ -125,4 +128,4 @@ readJournalFromHandle h = do
   
 listJournals :: IO [FilePath]
 listJournals = filter (endswith ".json") <$> allDataFiles
-  where allDataFiles =  getAppUserDataDirectory "mittens" >>= getDirectoryContents
+  where allDataFiles =  getAppUserDataDirectory programName >>= getDirectoryContents
