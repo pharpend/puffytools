@@ -29,27 +29,18 @@ version. You'll need `git`, `ghc`, `sh`, and `cabal-install`. You can see
 
 You can run `ptk help`, and get this output. This is accurate of commit 4ef330c.
 
-**ptk** \
-The Puffy Toolkit, version 0.0.0\
-\
-  **journal**\
-  Do things with Journals\
-  \
-    **list**\
-    List all of the available journals\
-    \
-    \
-    **help**\
-    Show help for the journal module\
-    \
-    \
-  \
-  **help**\
-  Show this help menu.\
-  \
-  \
-  **version**\
-  Print the version to the console. Meant for use in other programs.\
+**ptk**   
+The Puffy Toolkit, version 0.0.0  
+  **journal**  
+  Do things with Journals  
+    **list**  
+    List all of the available journals  
+    **help**  
+    Show help for the journal module  
+  **help**  
+  Show this help menu.  
+  **version**  
+  Print the version to the console. Meant for use in other programs.  
   
 # Licensing
 
