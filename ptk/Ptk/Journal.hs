@@ -9,7 +9,7 @@ Portability  : Linux
 
 -}
 
-module Ptk.Journal (journalTree, journalHelp) where
+module Ptk.Journal (jTree, journalTree, journalHelp) where
 
 import           Data.Traversable
 import           PuffyTools.Journal
@@ -20,10 +20,14 @@ import           System.Console.Argument
 import           System.Console.Command
 import           System.Console.Program
 
+subCommandList = [journalAddEntryTree, journalAETree, journalListTree, journalLsTree, journalNewTree, journalHelpTree]
 journalTree :: Commands IO
-journalTree = Node journalCommand [journalAddEntryTree, journalAETree, journalListTree, journalNewTree, journalHelpTree]
+journalTree = Node journalCommand subCommandList
   where
     journalCommand = Command "journal" "Do things with Journals" journalHelp
+
+jTree = Node jCommand subCommandList
+  where jCommand = Command "j" "Same as journal." journalHelp
 
 journalHelpTree = Node (Command "help" "Show help for the journal module" journalHelp) []
 

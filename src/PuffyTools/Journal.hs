@@ -143,7 +143,6 @@ listJournals = listJournalFiles
 -- |List all of the journal file paths
 listJournalFiles :: IO [FilePath]
 listJournalFiles = do
-  adf <- allDataFiles
   ddr <- ddir
   fps <- filter (endswith ".journal") <$> allDataFiles
   return $ map (\fp -> mconcat [ddr, "/", fp]) fps
