@@ -30,6 +30,9 @@ import           System.IO
 programName :: String
 programName = "puffytools"
 
+journalExt :: String
+journalExt = ".journal"
+
 -- |A Journal is really a wrapper around a list of entries
 data Journal = Journal { journalSlug :: Slug
                        , journalTitle :: Text
@@ -57,13 +60,14 @@ instance FromJSON Journal where
   parseJSON _ = fail "Must be an object"
 
 instance ToJSON Journal where
-  toJSON (Journal s t le cr des ent) = object [ "slug" .= s
-                                              , "title" .= t
-                                              , "last-edited" .= le
-                                              , "created" .= cr
-                                              , "description" .= des
-                                              , "entries" .= ent
-                                              ]
+  toJSON (Journal s t le cr des ent) = object
+                                         [ "slug" .= s
+                                         , "title" .= t
+                                         , "last-edited" .= le
+                                         , "created" .= cr
+                                         , "description" .= des
+                                         , "entries" .= ent
+                                         ]
 
 instance FromJSON Entry where
   parseJSON (Object v) = Entry <$> v .: "summary"
@@ -88,14 +92,20 @@ mkEntry entryText = Entry entryText <$> getCurrentTime <*> getCurrentTime
 mkJournal :: Slug -> IO Journal
 mkJournal s = getCurrentTime >>= \t -> return $ Journal s mempty t t mempty mempty
 
+-- |Makes a journal, given a slug
+mkJournal' :: Text -> IO Journal
+mkJournal' s = mkSlugIO s >>= mkJournal
+
 -- |Figures out the file path for a journal
 generateJournalPath :: Journal -> IO FilePath
-generateJournalPath j = getAppUserDataDirectory programName >>= \d -> return $ d <> "/" <> (T.unpack . unSlug . journalSlug) j <> ".json"
+generateJournalPath j = do
+  dataDir <- getAppUserDataDirectory programName
+  return $ mconcat [dataDir, "/",  (T.unpack . unSlug . journalSlug) j,  journalExt]
 
 generateSlugPath :: Slug -> IO FilePath
 generateSlugPath slg = do
   ddir <- getAppUserDataDirectory programName
-  let fullPath = mconcat [ddir, "/", T.unpack $ unSlug slg, ".json"]
+  let fullPath = mconcat [ddir, "/", T.unpack $ unSlug slg, journalExt]
   return fullPath
 
 -- |Writes a journal to a file path
@@ -126,10 +136,36 @@ readJournalFromHandle h = do
     Left err -> fail err
     Right j  -> return j
   
+{-# DEPRECATED listJournals "use listJournalFiles instead"#-}
 listJournals :: IO [FilePath]
-listJournals = filter (endswith ".json") <$> allDataFiles
+listJournals = listJournalFiles
+
+-- |List all of the journal file paths
+listJournalFiles :: IO [FilePath]
+listJournalFiles = do
+  adf <- allDataFiles
+  ddr <- ddir
+  fps <- filter (endswith ".journal") <$> allDataFiles
+  return $ map (\fp -> mconcat [ddr, "/", fp]) fps
+
   where
+    ddir = getAppUserDataDirectory programName
     allDataFiles = do
-      i <- getAppUserDataDirectory programName
-      i `seq` createDirectoryIfMissing True i
-      getDirectoryContents i
+      d <- ddir
+      d `seq` createDirectoryIfMissing True d
+      getDirectoryContents d
+
+-- |List all of the Journal slugs
+listJournalSlugs :: IO [Text]
+listJournalSlugs = do
+  fps <- listJournalFiles
+  journals <- mapM readJournalFromFile fps
+  let slugs = map (unSlug . journalSlug) journals
+  pure slugs
+
+ifJournal :: Text -> IO () -> IO ()
+ifJournal slg doStuff = do
+  jss <- listJournalSlugs
+  if slg `elem` jss
+    then doStuff
+    else return ()

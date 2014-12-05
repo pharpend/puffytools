@@ -64,6 +64,7 @@ executable ptk
   other-modules:
     Ptk.Journal
     Ptk.Journal.List
+    Ptk.Journal.New
 
 source-repository head
   type: git

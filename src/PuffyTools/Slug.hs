@@ -13,10 +13,15 @@ The slug must be alphanumeric, with the exception of "-_". It also
 must be between 4 and 32 chars long.
 -}
 
-module PuffyTools.Slug
-       (Slug, mkSlugMaybe, mkSlugEither, mkRandomSlug, slugAcceptChars,
-        unSlug)
-       where
+module PuffyTools.Slug (
+    Slug,
+    mkSlugMaybe,
+    mkSlugEither,
+    mkRandomSlug,
+    mkSlugIO,
+    slugAcceptChars,
+    unSlug,
+    ) where
 
 import           Control.Applicative
 import           Control.Monad
@@ -46,6 +51,11 @@ mkSlugEither s
     -- ftb ~ "filter badness"
     ftb :: Text
     ftb = T.filter (\c -> c `elem` slugAcceptChars) s
+
+mkSlugIO :: Text -> IO Slug
+mkSlugIO t = case mkSlugEither t of
+  Left msg  -> fail msg
+  Right slg -> return slg
 
 -- |Generates a random slug 32 chars long
 mkRandomSlug :: IO Slug

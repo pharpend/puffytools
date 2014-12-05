@@ -14,12 +14,13 @@ module Ptk.Journal (journalTree, journalHelp) where
 import           Data.Traversable
 import           PuffyTools.Journal
 import           Ptk.Journal.List
+import           Ptk.Journal.New
 import           System.Console.Argument
 import           System.Console.Command
 import           System.Console.Program
 
 journalTree :: Commands IO
-journalTree = Node journalCommand [journalListTree, journalHelpTree]
+journalTree = Node journalCommand [journalListTree, journalNewTree, journalHelpTree]
   where
     journalCommand = Command "journal" "Do things with Journals" journalHelp
 
