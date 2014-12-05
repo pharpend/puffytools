@@ -26,15 +26,15 @@ journalListHelp = io $ showUsage journalListTree
 journalLsTree :: Commands IO
 journalLsTree = Node lsCommand []
   where
-    lsCommand = Command "ls" "Same as list" listJournals
+    lsCommand = Command "ls" "Same as list" listJournalsCmd
 
 journalListTree :: Commands IO
 journalListTree = Node listCommand []
   where
-    listCommand = Command "list" "List all of the available journals" listJournals
+    listCommand = Command "list" "List all of the available journals" listJournalsCmd
 
-listJournals :: Action IO
-listJournals = io $ do
+listJournalsCmd :: Action IO
+listJournalsCmd = io $ do
   journals <- mapM readJournalFromFile =<< listJournals
   case journals of
     [] -> putStrLn "You haven't created any journals."
