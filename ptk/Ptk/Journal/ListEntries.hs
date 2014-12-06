@@ -12,6 +12,7 @@ Portability  : Linux
 module Ptk.Journal.ListEntries (journalLeTree, journalListEntriesTree, journalListEntriesHelp) where
 
 import           Control.Applicative
+import           Control.Monad ((<=<))
 import           Data.List (sort)
 import           Data.Monoid (mconcat)
 import           Data.Ord (comparing)
@@ -59,8 +60,11 @@ listEntriesAction slg timeFormat = io $ do
   j <- readJournalDef slg
   let etys = journalEntries j
       sorted_etys = sort $ toList etys
-  mapM_ (\ety -> Tio.putStrLn $ formatEntry ety) sorted_etys 
+  mapM_ (\ety -> Tio.putStrLn =<< formatEntry ety) sorted_etys 
   where
-    formatEntry ety = mconcat [pack . formattedTime $ entryCreated ety, "\t", entrySummary ety]
-    formattedTime = formatTime defaultTimeLocale timeFormat 
+    formatEntry ety = do
+      time <- formattedTime $ entryCreated ety
+      return $ mconcat [pack time, "\t", entrySummary ety]
+    formattedTime :: UTCTime -> IO String
+    formattedTime = fmap (formatTime defaultTimeLocale timeFormat) . utcToLocalZonedTime
 
