@@ -1,6 +1,6 @@
 {- |
-Module       : TestMittensJournal
-Description  : Test the Mittens journal functions
+Module       : TestPuffyToolsJournal
+Description  : Test the PuffyTools journal functions
 Copyright    : 2014, Peter Harpending
 License      : BSD3
 Maintainer   : Peter Harpending <pharpend2@gmail.com>
@@ -9,7 +9,7 @@ Portability  : Linux
 
 -}
 
-module TestMittensJournal where
+module TestPuffyToolsJournal where
 
 import           Control.Applicative ((<$>), (<*>), pure)
 import           Control.Monad ((<=<))
@@ -17,9 +17,9 @@ import           Data.Aeson
 import qualified Data.Text as T
 import           Data.Time
 import qualified Data.Vector as V
-import           Mittens.Journal
+import           PuffyTools.Journal
 import           System.IO.Unsafe
-import           TestMittensSlug ()
+import           TestPuffyToolsSlug ()
 import           Test.QuickCheck
 
 -- |So, it turns out, encoding & decoding isn't an identity. However,
@@ -74,7 +74,7 @@ instance Arbitrary UTCTime where
   arbitrary = pure $ unsafePerformIO getCurrentTime 
 
 instance Arbitrary Entry where
-  arbitrary = Entry <$> arbitrary <*> arbitrary <*> arbitrary <*> arbitrary
+  arbitrary = Entry <$> arbitrary <*> arbitrary <*> arbitrary 
 
 instance Arbitrary x => Arbitrary (V.Vector x) where
   arbitrary = V.fromList <$> arbitrary

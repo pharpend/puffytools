@@ -1,6 +1,6 @@
 {- |
-Module       : TestMittensSlug
-Description  : Test the Mittens.Slug module
+Module       : TestPuffyToolsSlug
+Description  : Test the PuffyTools.Slug module
 Copyright    : 2014, Peter Harpending
 License      : BSD3
 Maintainer   : Peter Harpending <pharpend2@gmail.com>
@@ -9,10 +9,10 @@ Portability  : Linux
 
 -}
 
-module TestMittensSlug where
+module TestPuffyToolsSlug where
 
 import           Control.Applicative
-import           Mittens.Slug
+import           PuffyTools.Slug
 import           Data.Text (pack)
 import           Test.QuickCheck
 
