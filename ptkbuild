@@ -16,6 +16,9 @@ clean () {
 }
 
 case $1 in
+    install)
+        clean && build
+        ;;
     build)
         build
         ;;
@@ -35,6 +38,6 @@ case $1 in
         esac
         ;;
     *)
-        clean && build && test
+        clean && build
         ;;
 esac

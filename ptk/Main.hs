@@ -32,11 +32,16 @@ helpTree = Node helpCommand []
   where
     helpCommand = Command "help" "Show this help menu." help
 
+shellTree :: Commands IO
+shellTree = Node ptkShell []
+  where
+    ptkShell = Command "shell" "PTK REPL (Expiremental)." (io $ interactive commandTree)
+
 help :: Action IO
 help = io $ showUsage commandTree
 
 commandTree :: Commands IO
-commandTree = Node (Command "ptk" description help) [journalTree, helpTree, versionTree]
+commandTree = Node (Command "ptk" description help) [jTree, journalTree, helpTree, versionTree, shellTree]
   where
     description = "The Puffy Toolkit, version " ++ showVersion version
 

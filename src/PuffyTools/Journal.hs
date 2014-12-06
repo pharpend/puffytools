@@ -143,7 +143,6 @@ listJournals = listJournalFiles
 -- |List all of the journal file paths
 listJournalFiles :: IO [FilePath]
 listJournalFiles = do
-  adf <- allDataFiles
   ddr <- ddir
   fps <- filter (endswith ".journal") <$> allDataFiles
   return $ map (\fp -> mconcat [ddr, "/", fp]) fps
@@ -163,9 +162,18 @@ listJournalSlugs = do
   let slugs = map (unSlug . journalSlug) journals
   pure slugs
 
+-- |Perform some action if a given journal exists
 ifJournal :: Text -> IO () -> IO ()
 ifJournal slg doStuff = do
   jss <- listJournalSlugs
   if slg `elem` jss
+    then doStuff
+    else return ()
+
+-- |Perform some action if a given journal does not exist
+unlessJournal :: Text -> IO () -> IO ()
+unlessJournal slg doStuff = do
+  jss <- listJournalSlugs
+  if not (slg `elem` jss)
     then doStuff
     else return ()
