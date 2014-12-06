@@ -2,7 +2,7 @@
 -- documentation, see http://haskell.org/cabal/users-guide/
 
 name:                puffytools
-version:             0.0.0-rc1
+version:             0.0.0.1
 synopsis:            A CLI assistant
 description:
   A CLI-based "personal assistant." It will keep journal entries, remind you of
