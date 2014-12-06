@@ -1,4 +1,4 @@
-# puffytools, version 0.0.0
+# puffytools, version 0.0.0.1
 
 This is the Puffy Toolkit, or Ptk. Ptk is a command-line "personal assistant",
 of sorts. Currently, it will keep journals. I'm adding more functionality as I
